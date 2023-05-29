@@ -33,7 +33,7 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_launch_template" "template" {
-  name              = "${var.name}-${var.env}-template"
+  name              = "${var.name}-${var.env}-tmplt"
   name_prefix   = "${var.name}-${var.env}"
   image_id      = data.aws_ami.ami.id
   instance_type = var.instance_type
