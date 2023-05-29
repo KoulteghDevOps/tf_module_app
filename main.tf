@@ -33,6 +33,7 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_launch_template" "template" {
+  name              = "${var.name}-${var.env}-template"
   name_prefix   = "${var.name}-${var.env}"
   image_id      = data.aws_ami.ami.id
   instance_type = var.instance_type
@@ -40,7 +41,7 @@ resource "aws_launch_template" "template" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-    name              = "${var.name}-${var.env}-asg"
+  name              = "${var.name}-${var.env}-asg"
 #   availability_zones = ["us-east-1a"]
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
@@ -50,6 +51,15 @@ resource "aws_autoscaling_group" "asg" {
   launch_template {
     id      = aws_launch_template.template.id
     version = "$Latest"
+  }
+
+  dynamic "tag" {
+    for_each = local.asg_tags
+    content {
+        key                 = tag.value.key
+        propagate_at_launch = true #tag.value.propagate_at_launch
+        value               = tag.value.value
+    }
   }
 }
 
