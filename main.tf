@@ -40,7 +40,7 @@ resource "aws_launch_template" "template" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  availability_zones = ["us-east-1a"]
+#   availability_zones = ["us-east-1a"]
   desired_capacity   = var.desired_capacity
   max_size           = var.max_size
   min_size           = var.min_size
