@@ -5,8 +5,8 @@ resource "aws_security_group" "sg" {
 
   ingress {
     description      = "APP" # "TLS from VPC"
-    from_port        = 8080
-    to_port          = 8080
+    from_port        = var.app_port
+    to_port          = var.app_port
     protocol         = "tcp"
     cidr_blocks      = var.allow_app_cidr #[aws_vpc.main.cidr_block]
   }
@@ -93,10 +93,10 @@ resource "aws_lb_listener_rule" "rule" {
 }
 
 resource "aws_route53_record" "main" {
-  zone_id = var.domain_id4040
+  zone_id = var.domain_id
   name    = local.dns_name
   type    = "CNAME"
-  ttl     = 45
+  ttl     = 30
   records = [var.lb_dns_name]
 }
 
