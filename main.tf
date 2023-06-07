@@ -18,7 +18,14 @@ resource "aws_security_group" "sg" {
     protocol         = "tcp"
     cidr_blocks      = var.bastion_cidr #[aws_vpc.main.cidr_block]
   }
-
+  
+  ingress {
+    description      = "PROMETHEUS" # "TLS from VPC"
+    from_port        = 9100
+    to_port          = 9100
+    protocol         = "tcp"
+    cidr_blocks      = var.monitor_cidr 
+  }
   egress {
     from_port        = 0
     to_port          = 0
